@@ -1,0 +1,16 @@
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - phar://phpstan.phar/conf/bleedingEdge.neon
+
+parameters:
+    tmpDir: var/phpstan
+
+    parallel:
+        maximumNumberOfProcesses: 4
+
+    # can be removed and fixed in the future
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    checkUninitializedProperties: true
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    reportMaybesInPropertyPhpDocTypes: false
