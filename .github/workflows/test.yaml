@@ -1,0 +1,48 @@
+name: Tests
+
+on:
+    push:
+        branches:
+            - '**'
+        tags-ignore:
+            - '**'
+
+jobs:
+    build:
+
+        name: Run tests
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Set Timezone
+                run: sudo timedatectl set-timezone "Europe/Prague"
+
+            -   uses: actions/checkout@v3
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.1'
+                    tools: composer:v2
+                    coverage: none
+
+            -   name: Validate composer packages
+                run: composer validate --no-check-all --strict
+
+            -   name: Install packages
+                run: composer install --no-progress --no-interaction
+
+            -   name: PHP lint
+                run: composer phplint
+
+            -   name: PHP_CodeSniffer
+                run: composer cs
+
+            -   name: PHPStan (general)
+                run: composer phpstan-general
+
+            -   name: PHPStan (tests)
+                run: composer phpstan-tests
+
+            -   name: PHPUnit
+                run: vendor/bin/phpunit

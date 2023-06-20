@@ -1,0 +1,6 @@
+/vendor/
+/var/
+
+.phpcs-cache
+.phpunit.cache
+.phpunit.result.cache
