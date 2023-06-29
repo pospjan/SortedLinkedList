@@ -59,6 +59,16 @@ class SortedLinkedListTest extends TestCase
         self::assertSame('a,b,c', $sortedLinkedList->getAsString());
     }
 
+    public function testStringsAreSortedLexicographically(): void
+    {
+        $sortedLinkedList = new SortedLinkedList();
+        $sortedLinkedList->addItem('1');
+        $sortedLinkedList->addItem('10');
+        $sortedLinkedList->addItem('2');
+        self::assertCount(3, $sortedLinkedList);
+        self::assertSame('1,10,2', $sortedLinkedList->getAsString());
+    }
+
     public function testInvalidSortOrderCantByUsed(): void
     {
         $this->expectException(\InvalidArgumentException::class);

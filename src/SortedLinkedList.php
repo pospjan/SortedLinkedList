@@ -90,6 +90,13 @@ final class SortedLinkedList implements \Iterator, \Countable
 
     private function compare(int|string $a, int|string $b): bool
     {
+        if ($this->head !== null && gettype($this->head->value) === 'string') {
+            if ($this->sortOrder === self::SORT_ASC) {
+                return strcmp((string) $a, (string) $b) === -1;
+            }
+            return strcmp((string) $a, (string) $b) === 1;
+        }
+
         if ($this->sortOrder === self::SORT_ASC) {
             return $a < $b;
         }
