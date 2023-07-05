@@ -218,8 +218,8 @@ class SortedLinkedListTest extends TestCase
         $sortedLinkedList->addItem('b');
 
         $items = [];
-        foreach ($sortedLinkedList as $node) {
-            $items[] = $node->value;
+        foreach ($sortedLinkedList as $key => $node) {
+            $items[$key] = $node->value;
         }
 
         self::assertSame(['a', 'b', 'c'], $items);

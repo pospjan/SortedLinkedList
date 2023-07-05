@@ -12,6 +12,8 @@ final class SortedLinkedList implements \Iterator, \Countable
 
     private int $position = 0;
 
+    private ?Node $currentItem = null;
+
     private int $sortOrder;
 
     public function __construct(
@@ -33,6 +35,7 @@ final class SortedLinkedList implements \Iterator, \Countable
 
         if ($this->head === null) {
             $this->head = new Node($item, null);
+            $this->currentItem = $this->head;
         } elseif ($this->compare($item, $this->head->value)) {
             $this->head = new Node($item, $this->head);
         } else {
@@ -122,14 +125,8 @@ final class SortedLinkedList implements \Iterator, \Countable
 
     public function current(): Node
     {
-        $i = 0;
-        $currentNode = $this->head;
-        while ($currentNode !== null) {
-            if ($i === $this->position) {
-                return $currentNode;
-            }
-            $currentNode = $currentNode->next;
-            $i++;
+        if ($this->currentItem !== null) {
+            return $this->currentItem;
         }
 
         throw new \OutOfBoundsException();
@@ -137,7 +134,12 @@ final class SortedLinkedList implements \Iterator, \Countable
 
     public function next(): void
     {
+        if ($this->currentItem === null) {
+            return;
+        }
+
         $this->position++;
+        $this->currentItem = $this->currentItem->next;
     }
 
     public function key(): int
@@ -147,22 +149,13 @@ final class SortedLinkedList implements \Iterator, \Countable
 
     public function valid(): bool
     {
-        $i = 0;
-        $currentNode = $this->head;
-        while ($currentNode !== null) {
-            if ($i === $this->position) {
-                return true;
-            }
-            $currentNode = $currentNode->next;
-            $i++;
-        }
-
-        return false;
+        return $this->currentItem !== null;
     }
 
     public function rewind(): void
     {
         $this->position = 0;
+        $this->currentItem = $this->head;
     }
 
     public function count(): int
